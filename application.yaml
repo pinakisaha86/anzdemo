@@ -1,5 +1,5 @@
 s3_conf:
-    s3_bucket: saha-bigdata
+    s3_bucket: anz-demo
 
 sftp_conf:
     filetype: csv

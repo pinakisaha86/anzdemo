@@ -30,13 +30,27 @@ if __name__ == '__main__':
     hadoop_conf.set("fs.s3a.access.key", app_secret["s3_conf"]["access_key"])
     hadoop_conf.set("fs.s3a.secret.key", app_secret["s3_conf"]["secret_access_key"])
 
-    fin_file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/finances-small"
+    fin_file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/curated/monthly/"
     finance_df = spark.sql("select * from parquet.`{}`".format(fin_file_path))
 
     finance_df.printSchema()
     finance_df.show(5, False)
     finance_df.createOrReplaceTempView("finances")
 
-    spark.sql("select * from finances order by amount").show(5, False)
+    agg_finance_df = spark.sql("""
+        select
+            account,
+            sum(Amount) as TotalTransaction,
+            count(Amount) as NumberOfTransaction,
+            max(Amount) as MaxTransaction,
+            min(Amount) as MinTransaction,
+            collect_set(Description) as UniqueTransactionDescriptions
+        from
+            finances
+        group by
+            account
+        """)
 
-# spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" dataframe/curation/sql/finance_data_analysis.py
+    agg_finance_df.write.option("header", "true").mode("overwrite").csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/publish/monthly/")
+
+# spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/anz_monthly.py
