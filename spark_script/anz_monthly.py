@@ -41,11 +41,10 @@ if __name__ == '__main__':
     agg_finance_df = spark.sql("""
             select
                 account,
-                sum(Amount) as TotalTransaction,
-                count(Amount) as NumberOfTransaction,
-                max(Amount) as MaxTransaction,
-                min(Amount) as MinTransaction,
-                collect_set(Description) as UniqueTransactionDescriptions
+                sum(amount) as TotalTransaction,
+                count(amount) as NumberOfTransaction,
+                max(amount) as MaxTransaction,
+                min(amount) as MinTransaction,
             from
                 finances
             group by
