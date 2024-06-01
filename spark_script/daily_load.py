@@ -35,8 +35,8 @@ if __name__ == '__main__':
     df1.withColumn("Customer_Membership", \
                   when((df1.annual_salary < 40000), lit("Bronze Member")) \
                   .when((df1.annual_salary >= 40000) & (df1.annual_salary <= 70000), lit("Silver Member")) \
-                  .otherwise(lit("Gold Member"))
+                  .otherwise(lit("Gold Member")).show(20, False)
 
-    df1.show(20, False)
+
 
         # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/daily_load.py
