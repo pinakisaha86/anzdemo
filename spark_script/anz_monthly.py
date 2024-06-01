@@ -35,22 +35,5 @@ if __name__ == '__main__':
 
     finance_df.printSchema()
     finance_df.show(5, False)
-    finance_df.createOrReplaceTempView("finances")
 
-    agg_finance_df = spark.sql("""
-        select
-            account,
-            sum(Amount) as TotalTransaction,
-            count(Amount) as NumberOfTransaction,
-            max(Amount) as MaxTransaction,
-            min(Amount) as MinTransaction,
-            collect_set(Description) as UniqueTransactionDescriptions
-        from
-            finances
-        group by
-            account
-        """)
-
-    agg_finance_df.write.option("header", "true").mode("overwrite").csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/publish/monthly/")
-
-# spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/anz_monthly.py
+   # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/anz_monthly.py
