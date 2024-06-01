@@ -29,7 +29,8 @@ if __name__ == '__main__':
 
     print("\nCreating dataframe ingestion CSV file using 'SparkSession.read.format()'")
 
-    df2 = spark.read.option("header", "true").option("delimiter", ",").csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/landing/daily/")
+    df2 = spark.read.option("header", "true").option("inferSchema", "true").option("delimiter", ",").csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/landing/daily/")
+    df2.printSchema()
     df2.show(20, False)
 
 
