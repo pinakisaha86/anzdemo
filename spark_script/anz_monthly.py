@@ -50,5 +50,7 @@ if __name__ == '__main__':
 
     agg_finance_df.show(5, False)
 
+    agg_finance_df.write.option("header", "true").mode("overwrite").csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/publish/monthly/")
+
 
    # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/anz_monthly.py
