@@ -47,8 +47,7 @@ if __name__ == '__main__':
                 min(amount) as MinTransaction,
             from
                 finances
-            group by
-                account
+            
             """)
 
     agg_finance_df.show(5, False)
