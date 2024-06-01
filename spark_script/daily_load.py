@@ -32,8 +32,11 @@ if __name__ == '__main__':
     df1 = spark.read.option("header", "true").option("inferSchema", "true").option("delimiter", ",").parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/curated/daily/")
     df1.printSchema()
     df1.show(20, False)
-    df1.withColumn("Cash_Back", df1.amount*0.3).show(20, False)
 
+    print("\n Display Cash back amount 'SparkSession.read.format()'")
+
+
+    df1.withColumn("Cash_Back", df1.amount*0.3).show(20, False)
 
 
     # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/daily_load.py
