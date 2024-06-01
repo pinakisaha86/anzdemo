@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     df2= df1.withColumn("Cash_Back", df1.amount*0.3).show(20, False)
 
-    df2.repartition(1).write.option("header", "true").mode("overwrite").csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/publish/daily/")
+    df2.write.option("header", "true").mode("overwrite").csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/publish/daily/")
 
 
     # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/daily_load.py
