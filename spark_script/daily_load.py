@@ -27,11 +27,15 @@ if __name__ == '__main__':
     hadoop_conf.set("fs.s3a.access.key", app_secret["s3_conf"]["access_key"])
     hadoop_conf.set("fs.s3a.secret.key", app_secret["s3_conf"]["secret_access_key"])
 
-    print("\nCreating dataframe ingestion CSV file using 'SparkSession.read.format()'")
+    print("\n Read Curated parquet file using 'SparkSession.read.format()'")
 
-    df2 = spark.read.option("header", "true").option("inferSchema", "true").option("delimiter", ",").parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/curated/daily/")
-    df2.printSchema()
-    df2.show(20, False)
-
-
-# spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/daily_load.py
+    df1 = spark.read.option("header", "true").option("inferSchema", "true").option("delimiter", ",").parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/curated/daily/")
+    df1.printSchema()
+    df1.show(20, False)
+    df1.withColumn("Customer_Membership", \
+                  when((df.annual_salary < 40000), lit("Bronze Member")) \
+                  .when((df.annual_salary >= 40000) & (df.annual_salary <= 70000), lit("Silver Member")) \
+                  .otherwise(lit("Gold Member")) \
+    df1.show(20, False)
+ \
+        # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/daily_load.py
