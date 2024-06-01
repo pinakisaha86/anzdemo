@@ -38,19 +38,17 @@ if __name__ == '__main__':
     finance_df.printSchema()
     finance_df.show(5, False)
 
-    finance_df.createOrReplaceTempView("finances")
+    agg_finance_df = finance_df \
+        .groupBy("account") \
+        .agg(avg("amount").alias("AverageTransaction"),
+             sum("amount").alias("TotalTransaction"),
+             count("amount").alias("NumberOfTransaction"),
+             max("amount").alias("MaxTransaction"),
+             min("amount").alias("MinTransaction"),
 
-    agg_finance_df = spark.sql("""
-            select
-                account,
-                sum(amount) as TotalTransaction,
-                count(amount) as NumberOfTransaction,
-                max(amount) as MaxTransaction,
-                min(amount) as MinTransaction,
-            from
-                finances
-            
-            """)
+             )
 
     agg_finance_df.show(5, False)
+
+
    # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/anz_monthly.py
