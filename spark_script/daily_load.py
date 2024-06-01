@@ -32,7 +32,7 @@ if __name__ == '__main__':
     df1 = spark.read.option("header", "true").option("inferSchema", "true").option("delimiter", ",").parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/curated/daily/")
     df1.printSchema()
     df1.show(20, False)
-    df1.withColumn("Cash_Back", df1.amount*0.3)
+    df1.withColumn("Cash_Back", df1.amount*0.3).show(20, False)
 
 
 
