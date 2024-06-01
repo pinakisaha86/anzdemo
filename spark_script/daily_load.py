@@ -32,7 +32,7 @@ if __name__ == '__main__':
     df1 = spark.read.option("header", "true").option("inferSchema", "true").option("delimiter", ",").parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/curated/daily/")
     df1.printSchema()
     df1.show(20, False)
-    #df2 = df1.withColumn("Customer_Membership", when((df1.annual_salary < 40000), lit("Bronze Member")).when((df1.annual_salary >= 40000) & (df1.annual_salary <= 70000), lit("Silver Member")).otherwise(lit("Gold Member"))
+    df2 =df1.withColumn("Customer_Membership", when((df1.annual_salary < 40000), lit("Bronze Member")).when((df1.annual_salary >= 40000) & (df1.annual_salary <= 70000), lit("Silver Member")).otherwise(lit("Gold Member"))
 
 
 
