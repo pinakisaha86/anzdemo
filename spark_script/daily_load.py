@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
     # Write DataFrame to CSV
 
-    #df2.repartition(1).write.option("header", "true").mode("overwrite").csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/publish/daily/")
+    df2.repartition(1).write.option("header", "true").mode("overwrite").csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/publish/daily/")
 
 
     # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" spark_script/daily_load.py
