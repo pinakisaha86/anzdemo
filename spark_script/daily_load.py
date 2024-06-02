@@ -36,7 +36,7 @@ if __name__ == '__main__':
     print("\n Display Cash back amount 'SparkSession.read.format()'")
 
 
-    df2=df1.withColumn("Cash_Back", df1.amount*0.3).show(20, False)
+    df2=df1.withColumn("Cash_Back", df1.amount*0.3)
 
     # Write DataFrame to CSV
     df2.write.csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/publish/daily/")
